@@ -69,11 +69,49 @@ function localTags(topic) {
   return base.concat(generic).slice(0, 20);
 }
 function localCopy(topic, tone, type) {
-  return [
-    'Discover ' + topic + ' — ' + tone + ', fresh and made with love. ✨',
-    'Why settle? ' + topic + ' that actually delivers. Try it today! 💛',
-    'Real quality, real results: ' + topic + '. Your perfect ' + type + ' starts here! 🔥'
-  ];
+  const t = topic;
+  const tn = (tone || '').toLowerCase();
+  const ty = (type || '').toLowerCase();
+  let pool;
+  if (tn.includes('prof')) {
+    pool = [
+      t + ' delivers consistent, measurable quality. 📈',
+      'Built for people who value precision — a ' + type + ' that reflects the ' + t + ' standard. 🤝',
+      'Efficiency. Clarity. Results. ' + t + '. ✅'
+    ];
+  } else if (tn.includes('bold')) {
+    pool = [
+      'Why settle? ' + t + ' that actually delivers. Try it today! 🔥',
+      'Stop scrolling. ' + t + ' is the upgrade you have been waiting for. ⚡',
+      t + ' does not follow trends — it sets them. 💥'
+    ];
+  } else if (tn.includes('fun') || tn.includes('hum')) {
+    pool = [
+      'Our lawyer said we cannot call ' + t + ' "too good". So we will just wink. 😉',
+      t + ': cheaper than therapy, twice the results. 😂',
+      'Warning: ' + t + ' may cause extreme satisfaction. 🚨'
+    ];
+  } else if (tn.includes('lux') || tn.includes('eleg')) {
+    pool = [
+      'Indulge in ' + t + ' — where quality meets elegance. 🥂',
+      t + ': for those who accept nothing less. ✨',
+      'A finer standard begins with ' + t + '. 🖤'
+    ];
+  } else {
+    pool = [
+      'Discover ' + t + ' — fresh, warm and made with love. ✨',
+      'We made ' + t + ' with one goal: make you smile. 💛',
+      'Pull up a chair — ' + t + ' feels like home. 😊'
+    ];
+  }
+  if (ty.includes('caption')) {
+    const tag = '#' + t.toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
+    pool = pool.map(l => l + ' ' + tag + ' #trending');
+  }
+  if (ty.includes('bio')) {
+    pool[0] = 'Hi, we are ' + t + ' — a ' + tn + ' team with a simple promise: quality first. 👋';
+  }
+  return pool;
 }
 function localChat(q) {
   const s = q.toLowerCase();
@@ -196,3 +234,4 @@ $('#tagCopy').addEventListener('click', () => {
   $('#tagCopy').textContent = 'Copied ✓';
   setTimeout(() => { $('#tagCopy').textContent = 'Copy all'; }, 1500);
 });
+    
